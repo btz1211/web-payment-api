@@ -1,9 +1,43 @@
 Rails.application.routes.draw do
+  get 'credit_cards/index'
+
+  get 'credit_cards/show'
+
+  get 'credit_cards/new'
+
+  get 'credit_cards/update'
+
+  get 'credit_cards/charge'
+
+  get 'users/new' => 'users#new'
+
+  get 'users/index' => 'users#index'
+
+  get 'users/:userId' => 'users#show'
+
+  get 'users/:userId/charge' => 'users#charge'
+
+  #API Routes
+  scope '/api' do
+    scope '/v1' do
+      scope '/users' do
+        post '/' => 'api/users#new'
+        get '/' => 'api/users#index'
+
+        scope '/:userId' do
+          get '/' => 'api/users#show'
+          put '/' => 'api/users#update'
+          put '/charge' => 'api/users#charge'
+        end
+      end
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'application#hello'
+  root 'users#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

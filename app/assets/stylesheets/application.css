@@ -13,3 +13,17 @@
  *= require_tree .
  *= require_self
  */
+
+ .content-container{
+   padding-top:5%;
+ }
+
+ .form-group{
+  padding:15px;
+ }
+
+.btn-sign-up{
+  float:right;
+  margin-right: 13%;
+  margin-top: 5%;
+}

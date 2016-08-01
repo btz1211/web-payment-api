@@ -1,21 +1,9 @@
 Rails.application.routes.draw do
-  get 'credit_cards/index'
-
-  get 'credit_cards/show'
-
-  get 'credit_cards/new'
-
-  get 'credit_cards/update'
-
-  get 'credit_cards/charge'
-
   get 'users/new' => 'users#new'
 
   get 'users/index' => 'users#index'
 
   get 'users/:userId' => 'users#show'
-
-  get 'users/:userId/charge' => 'users#charge'
 
   #API Routes
   scope '/api' do
@@ -28,6 +16,16 @@ Rails.application.routes.draw do
           get '/' => 'api/users#show'
           put '/' => 'api/users#update'
           put '/charge' => 'api/users#charge'
+
+          scope'/credit-cards' do
+            get '/' => 'api/credit_cards#index'
+
+            scope '/:credit_card_id' do
+              get '/' => 'api/credit_cards#show'
+              put '/' => 'api/credit_cards#update'
+              get '/charge/:amount' => 'api/credit_cards#charge'
+            end
+          end
         end
       end
     end

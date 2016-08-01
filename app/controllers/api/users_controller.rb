@@ -3,27 +3,40 @@ module Api
     include ApplicationHelper
 
     skip_before_action :verify_authenticity_token
-    before_action :create_user, :only => [:new]
 
     def new
-      if @user.valid?
-        @user.save()
-        render json: @user.as_json(except: [:id, :password])
+      #create user and credit card
+      user = create_user()
+
+      if user.valid?
+        credit_card = create_credit_card(user, params)
+
+        if credit_card.valid?
+          user.save()
+          credit_card.save()
+          user.credit_cards.push(credit_card)
+          render json: user.as_json(except: [:password])
+        else
+          errors = convert_error_hash_to_array(credit_card.errors)
+          render json: { errors: errors }.to_json, status: 400
+        end
+
       else
-        errors = convert_error_hash_to_array(@user.errors)
+        errors = convert_error_hash_to_array(user.errors)
         render json: { errors: errors }.to_json, status: 400
       end
+
     end
 
     def index
-      render json: User.all.to_json
+      render json: User.all.to_json(except: [:password])
     end
 
     def show
       userId = params[:userId]
 
       if User.exists?(id: userId)
-        render json: User.find(userId).to_json
+        render json: User.find(userId).to_json(except: [:password])
       else
         render json: { errors: ["user with id: #{userId} is not found"] }.to_json, status: 404
       end
@@ -31,16 +44,11 @@ module Api
 
     def update
       userId = params[:userId]
-
-    end
-
-    def charge
-      render json: 'charge'
     end
 
     private
       def create_user
-        @user = User.new(email: params[:email], password: params[:password],
+        User.new(email: params[:email], password: params[:password],
                     firstName: params[:firstName], lastName: params[:lastName])
       end
   end

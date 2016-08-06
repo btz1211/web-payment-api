@@ -13,7 +13,18 @@
  *= require_tree .
  *= require_self
  */
+body{
+  font-family: 'Roboto Slab', serif;
+}
 
+.navbar-brand{
+  padding: 11px 15px;
+}
+
+.welcome-jumbo{
+  background-image: url("marketing/mission-cuttingboard.jpg");
+  background-size: 100%;
+}
  .content-container{
    padding-top:5%;
  }

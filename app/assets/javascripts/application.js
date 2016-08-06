@@ -1,54 +1,56 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+var blueapron = angular.module('blueapron', ['ngResource']);
 
-function stripeResponseHandler(status, response) {
-  //Grab the form:
-  var $form = $('#sign-up-form');
+blueapron.factory('blueapronApi', function($resource){
+  var createUserResource = $resource("/api/v1/users");
 
-  if (response.error) { // Problem!
-
-    //Show the errors on the form:
-    $form.find('.payment-errors').text(response.error.message);
-    $form.find('.alert-danger').removeAttr('hidden');
-    $form.find('.submit').prop('disabled', false); // Re-enable submission
-
-  } else { // Token was created!
-
-    // Get the token ID:
-    var token = response.id;
-
-    // Insert the token ID into the form so it gets submitted to the server:
-    $form.append($('<input type="hidden" name="stripeToken">').val(token));
-
-    // Submit the form:
-    $form.get(0).submit();
+  return {
+    createUser: function(user){
+      console.log('[INFO] - saving user::' + JSON.stringify(user));
+       return createUserResource.save(user);
+    }
   }
-};
+});
 
-function signUp(){
-  var $form = $('#sign-up-form');
-  $form.submit(function(event) {
-    // Disable the submit button to prevent repeated clicks:
-    $form.find('.submit').prop('disabled', true);
+blueapron.controller('signUpCtrl', function($scope, $log, blueapronApi){
+  $scope.user = {}
 
-    // Request a token from Stripe:
-    Stripe.card.createToken($form, stripeResponseHandler);
+  $scope.signUp = function(){
+    var $form = $('#sign-up-form');
+    $form.submit(function(event) {
+      // Disable the submit button to prevent repeated clicks:
+      $form.find('.submit').prop('disabled', true);
 
-    // Prevent the form from being submitted:
-    return false;
-  });
-}
+      // Request a token from Stripe:
+      Stripe.card.createToken($form, $scope.stripeResponseHandler);
+
+      // Prevent the form from being submitted:
+      return false;
+    });
+  }
+
+  $scope.stripeResponseHandler = function(status, response) {
+    //Grab the form:
+    var $form = $('#sign-up-form');
+
+    if (response.error) {
+
+      //Show the errors on the form:
+      $form.find('.payment-errors').text(response.error.message);
+      $form.find('.alert-danger').removeAttr('hidden');
+      $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+    } else { // Token was created!
+
+      $scope.user.creditCard.stripeToken = response.id;
+      blueapronApi.createUser($scope.user).$promise
+      .then(function(response){
+        $form.find('.payment-errors').text('success');
+        $form.find('.alert-danger').removeAttr('hidden');
+        $log.info('success');
+      }).catch(function(error){
+        $form.find('.payment-errors').text(error.data.errors);
+        $form.find('.alert-danger').removeAttr('hidden');
+      })
+    }
+  }
+});

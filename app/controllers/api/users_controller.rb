@@ -5,11 +5,13 @@ module Api
     skip_before_action :verify_authenticity_token
 
     def new
+      puts "params::#{params}"
+
       #create user and credit card
       user = create_user()
 
       if user.valid?
-        credit_card = create_credit_card(user, params)
+        credit_card = create_credit_card(params[:creditCard])
 
         if credit_card.valid?
           user.save()

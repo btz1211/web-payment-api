@@ -11,16 +11,16 @@ module ApplicationHelper
     errors
   end
 
-  def create_credit_card(user, credit_card_params)
+  def create_credit_card(credit_card_info)
     customer = Stripe::Customer.create(
-      :source => credit_card_params[:stripeToken],
-      :description => "card for #{user.email}"
+      :source => credit_card_info[:stripeToken],
+      :description => "card for #{credit_card_info[:name]}"
     )
 
-    CreditCard.new(cardNumber: credit_card_params[:cardNumber],
-                   expirationMonth: credit_card_params[:expirationMonth],
-                   expirationYear: credit_card_params[:expirationYear],
-                   cvc: credit_card_params[:cvc],
+    CreditCard.new(cardNumber: credit_card_info[:cardNumber],
+                   expirationMonth: credit_card_info[:expirationMonth],
+                   expirationYear: credit_card_info[:expirationYear],
+                   cvc: credit_card_info[:cvc],
                    stripe_token: customer.id);
 
   end

@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get 'users/new' => 'users#new'
+  get 'signup' => 'application#signup'
+  get 'account' => 'application#account'
 
-  get 'users/index' => 'users#index'
-
-  get 'users/:userId' => 'users#show'
 
   #API Routes
   scope '/api' do
@@ -35,7 +33,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'users#index'
+  root 'application#home'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

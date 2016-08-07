@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'signup' => 'application#signup'
-  get 'account' => 'application#account'
+  get 'login' => 'application#login'
+  get 'signout' => 'application#signout'
+  # get 'account/:userId' => 'application#account', as: 'account'
 
 
   #API Routes
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
       scope '/users' do
         post '/' => 'api/users#new'
         get '/' => 'api/users#index'
+        get '/authenticate' => 'api/users#authenticate'
 
         scope '/:userId' do
           get '/' => 'api/users#show'

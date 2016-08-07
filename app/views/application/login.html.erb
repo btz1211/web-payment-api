@@ -1,0 +1,31 @@
+<div ng-controller='signUpCtrl'>
+  <legend><h1>Login</h1></legend>
+  <form name="loginForm" id="login-form" >
+    <div class="alert alert-dismissible alert-danger" hidden="true">
+      <span class="payment-errors"></span>
+    </div>
+    <fieldset>
+      <div class="form-group">
+             <div class="input-group input-group-lg">
+               <input type="text" required class="form-control" required placeholder="Email" ng-model="user.email"/>
+               <span class="input-group-addon"><i class="fa fa-user text-primary"></i></span>
+             </div>
+           </div>
+           <div class="form-group">
+             <div class="input-group input-group-lg">
+               <input type="password" required class="form-control" required placeholder="Password" ng-model="user.password"/>
+               <span class="input-group-addon"><i class="fa fa-lock text-primary"></i></span>
+             </div>
+           </div>
+
+           <div class="form-group">
+             <div class="input-group input-group-lg no-padding">
+               <div class="col-md-6">
+                 <button class="btn btn-lg btn-success btn-login"  ng-disabled="loginForm.$invalid" ng-click="login(user)">Login</button>
+               </div>
+             </div>
+           </div>
+
+    </fieldset>
+  </form>
+</div>

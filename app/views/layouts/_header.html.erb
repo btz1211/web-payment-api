@@ -11,9 +11,13 @@
     </div>
     <div class="collapse navbar-collapse" id="navbar-main">
       <ul class="nav navbar-nav">
-        <li><%= link_to "Home",   root_path %></li>
-        <li><%= link_to "Sign Up", signup_path %></li>
-        <li><%= link_to "Login", account_path %></li>
+        <% if cookies[:user] %>
+          <li><%= link_to "Sign out", signout_path %></li>
+        <% else %>
+          <li><%= link_to "Sign Up", signup_path %></li>
+          <li><%= link_to "Login", login_path %></li>
+        <% end %>
+
       </ul>
 
     <div>

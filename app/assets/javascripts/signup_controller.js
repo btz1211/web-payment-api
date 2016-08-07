@@ -1,4 +1,4 @@
-blueapron.controller('signUpCtrl', function($scope, $log, blueapronApi){
+blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blueapronApi){
   $scope.user = {}
 
   $scope.signUp = function(){
@@ -13,6 +13,18 @@ blueapron.controller('signUpCtrl', function($scope, $log, blueapronApi){
       // Prevent the form from being submitted:
       return false;
     });
+  }
+
+  $scope.login = function(){
+    blueapronApi.authenticateUser($scope.user).$promise
+    .then(function(response){
+      //redirect
+      $window.location.href = '/';
+    }).catch(function(error){
+      var $form = $('#login-form');
+      $form.find('.payment-errors').text(error.data.errors);
+      $form.find('.alert-danger').removeAttr('hidden');
+    })
   }
 
   $scope.stripeResponseHandler = function(status, response) {
@@ -31,9 +43,8 @@ blueapron.controller('signUpCtrl', function($scope, $log, blueapronApi){
       $scope.user.creditCard.stripeToken = response.id;
       blueapronApi.createUser($scope.user).$promise
       .then(function(response){
-        $form.find('.payment-errors').text('success');
-        $form.find('.alert-danger').removeAttr('hidden');
-        $log.info('success');
+        //redirect
+        $window.location.href = '/';
       }).catch(function(error){
         $form.find('.payment-errors').text(error.data.errors);
         $form.find('.alert-danger').removeAttr('hidden');

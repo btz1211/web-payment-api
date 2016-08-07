@@ -1,5 +1,8 @@
-<div class="jumbotron welcome-jumbo">
-  <h1>Welcome!</h1>
-  <p>Discover a better way to cook</p>
-  <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+<div ng-controller="accountCtrl">
+  <div class="jumbotron welcome-jumbo">
+    <h1>{{message}}</h1>
+    <p>Discover a better way to cook</p>
+    <p ng-hide="user"><a class="btn btn-primary btn-lg" ng-click="redirectToSignup()">Learn more</a></p>
+    <p ng-show="user"><a class="btn btn-primary btn-lg" ng-click="order()">Order Now!</a></p>
+  </div>
 </div>

@@ -5,10 +5,16 @@ class ApplicationController < ActionController::Base
 
   def signup
   end
-  
+
   def home
   end
-  
-  def account
+
+  def login
+
+  end
+
+  def signout
+    cookies.delete :user
+    redirect_to root_path
   end
 end

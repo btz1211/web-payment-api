@@ -1,6 +1,7 @@
 module Api
   class CreditCardsController < ApplicationController
     include ApplicationHelper
+    include CreditCardsHelper
 
     before_action  :get_user
 
@@ -50,21 +51,10 @@ module Api
         if credit_card
           #call stripe api to charge card
           begin
-            amount = params[:amount].to_i
+            charge_card(credit_card, params[:amount].to_i, params[:charge_description])
 
-            if amount >= 50
-              charge = Stripe::Charge.create(
-                :amount => amount,
-                :currency => "usd",
-                :customer => credit_card[:stripe_token],
-                :description => params[:charge_description]
-              )
-
-              render json:{ result: "success" }.to_json
-            else
-              render json: {errors: ["invalid charge amount: #{params[:amount]}, please provide amount in cents (i.e 100 is a $1), and at least 50 cents"] }.to_json, status: 500
-            end
-          rescue Stripe::CardError => e
+            render json: { success: true }
+          rescue Exception => e
             render json: {errors: ["unable to charge due to: #{e}"] }.to_json, status: 500
           end
         else

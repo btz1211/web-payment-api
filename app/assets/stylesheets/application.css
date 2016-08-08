@@ -44,3 +44,21 @@ body{
   padding-left: 40px;
   color: #337ab7;
 }
+
+.plan-image{
+  width:300px;
+  margin-left: 80px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  cursor:pointer;
+}
+
+.selected_plan_image{
+  border-color: rgba(21, 21, 21, 0.62);
+  border-width: 4px;
+}
+
+.image-caption{
+  margin-left: 120px;
+  color:#3c763d;
+}

@@ -1,8 +1,11 @@
 module Api
   class UsersController < ApplicationController
     include ApplicationHelper
+    include CreditCardsHelper
 
     skip_before_action :verify_authenticity_token
+
+    PRICE_HASH = {1 => 5999, 2 => 7999}
 
     def new
       puts "params::#{params}"
@@ -74,7 +77,12 @@ module Api
         user = User.find(userId)
         credit_card = user.credit_cards.first
 
-
+        begin
+          charge_card(credit_card,  PRICE_HASH[user.planId] , "Order for #{Time.now}")
+          render json: { success: true }
+        rescue Exception => e
+          render json: {errors: ["unable to charge due to: #{e}"] }.to_json, status: 500
+        end
       else
         render json: { errors: ["user with id: #{userId} is not found"] }.to_json, status: 404
       end
@@ -84,7 +92,8 @@ module Api
     private
       def create_user
         User.new(email: params[:email], password: params[:password],
-                    firstName: params[:firstName], lastName: params[:lastName])
+                    firstName: params[:firstName], lastName: params[:lastName],
+                    planId: params[:planId])
       end
       def set_user_cookie(user)
         cookies[:user] = { value: user.to_json(except: [:password]), expires: 30.minute.from_now }

@@ -1,5 +1,6 @@
 blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blueapronApi){
-  $scope.user = {}
+  $scope.user = {};
+  $scope.user.planId = 1;
 
   $scope.signUp = function(){
     var $form = $('#sign-up-form');
@@ -50,5 +51,9 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
         $form.find('.alert-danger').removeAttr('hidden');
       })
     }
+  }
+
+  $scope.changePlan = function(id){
+    $scope.user.planId = id
   }
 });

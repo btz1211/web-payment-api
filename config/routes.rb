@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         scope '/:userId' do
           get '/' => 'api/users#show'
           put '/' => 'api/users#update'
-          put '/charge' => 'api/users#charge'
+          put '/order' => 'api/users#order'
 
           scope'/credit-cards' do
             get '/' => 'api/credit_cards#index'

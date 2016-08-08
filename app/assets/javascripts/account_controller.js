@@ -21,8 +21,14 @@ blueapron.controller('accountCtrl', function($scope, $routeParams, $window, $coo
    }
 
   $scope.order = function(){
-    
+    blueapronApi.order($scope.user).$promise
+    .then(function(response){
+      console.log('response::' + JSON.stringify(response));
+    }).catch(function(error){
+      console.log('error::' + error);
+    });
   }
+
    $scope.getUser();
    $scope.setMessage();
 });

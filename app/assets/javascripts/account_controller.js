@@ -21,12 +21,29 @@ blueapron.controller('accountCtrl', function($scope, $routeParams, $window, $coo
    }
 
   $scope.order = function(){
+    $scope.removeMessages();
     blueapronApi.order($scope.user).$promise
     .then(function(response){
-      console.log('response::' + JSON.stringify(response));
-    }).catch(function(error){
-      console.log('error::' + error);
+      $scope.showOrderMessage();
+    }).catch(function(errors){
+      $scope.showErrorMessage(errors);
     });
+  }
+
+  $scope.showOrderMessage = function(){
+    $('.error-alert').attr('hidden', 'true');
+    $('.order-alert').removeAttr('hidden');
+  }
+
+  $scope.showErrorMessage = function(errors){
+    $('.order-alert').attr('hidden', 'true');
+    $('.error-alert').removeAttr('hidden');
+    $('.error-message').text(errors);
+  }
+
+  $scope.removeMessages = function(){
+    $('.order-alert').attr('hidden', 'true');
+    $('.error-alert').attr('hidden', 'true');
   }
 
    $scope.getUser();

@@ -8,27 +8,30 @@ module Api
     PRICE_HASH = {1 => 5999, 2 => 7999}
 
     def new
-      puts "params::#{params}"
-
       #create user and credit card
       user = create_user()
 
       if user.valid?
-        credit_card = create_credit_card(params[:creditCard])
+        begin
+          credit_card = create_credit_card(params[:creditCard])
 
-        if credit_card.valid?
-          user.save()
-          credit_card.save()
-          user.credit_cards.push(credit_card)
+          if credit_card.valid?
+            user.save()
+            credit_card.save()
+            user.credit_cards.push(credit_card)
 
-          #set user cookie
-          set_user_cookie(user)
+            #set user cookie
+            set_user_cookie(user)
 
-          #return created json
-          render json: user.as_json(except: [:password])
-        else
-          errors = convert_error_hash_to_array(credit_card.errors)
-          render json: { errors: errors }.to_json, status: 400
+            #return created json
+            render json: user.as_json(except: [:password])
+          else
+            errors = convert_error_hash_to_array(credit_card.errors)
+            render json: { errors: errors }.to_json, status: 400
+          end
+          
+        rescue Exception => e
+          render json: {errors: ["unable to charge due to: #{e}"] }.to_json, status: 500
         end
 
       else
@@ -95,6 +98,7 @@ module Api
                     firstName: params[:firstName], lastName: params[:lastName],
                     planId: params[:planId])
       end
+
       def set_user_cookie(user)
         cookies[:user] = { value: user.to_json(except: [:password]), expires: 30.minute.from_now }
       end

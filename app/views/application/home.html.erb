@@ -5,4 +5,80 @@
     <p ng-hide="user"><a class="btn btn-primary btn-lg" ng-click="redirectToSignup()">Learn more</a></p>
     <p ng-show="user"><a class="btn btn-primary btn-lg" ng-click="order()">Order Now!</a></p>
   </div>
+  <div class="alert alert-dismissible alert-success order-alert"  hidden="true">
+    <p><strong>Congratulations!</strong> Your order is on its way</p>
+  </div>
+  <div class="alert alert-dismissible alert-danger error-alert" hidden="true">
+    <span class="error-message"></span>
+  </div>
+
+  <!-- learn more section -->
+  <div class="col-lg-12 row">
+
+    <!-- learn more - receipes -->
+    <div class="col-lg-4 ">
+      <div class="learn-more-box">
+        <figure>
+          <figcaption class="image-caption learn-more-image-caption">
+            <span>
+              <img src="/assets/marketing/recipe-cards.png" class="learn-more-logo">
+              Original Recipes Weekly
+            </span>
+          </figcaption>
+          <img src="/assets/marketing/learn-info-pod-recipes.jpg" class="learn-more-image">
+          <figcaption class="trailing-text">
+            <ul>
+              <li>Discover exciting, seasonal recipes created by our culinary team and renowned guest chefs</li>
+              <li>Recipes never repeated in the same year</li>
+              <li>500-800 calories per serving</li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- learn more - ingredients -->
+    <div class="col-lg-4">
+      <div class="learn-more-box">
+        <figure>
+          <figcaption class="image-caption learn-more-image-caption">
+            <span>
+              <img src="/assets/marketing/ingredients.png" class="learn-more-logo">
+              <strong>Fresh Ingredients</strong>
+            </span>
+          </figcaption>
+          <img src="/assets/marketing/learn-info-pod-ingredients.jpg" class="learn-more-image">
+          <figcaption class="trailing-text">
+            <ul>
+              <li>Specialty ingredients that are fresher than the supermarket</li>
+              <li>Ingredients are perfectly pre-measured so there’s no waste</li>
+              <li>5Meats naturally raised on antibiotic- and hormone-free diets</li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- learn more - delivery -->
+    <div class="col-lg-4">
+      <div class="learn-more-box">
+        <figure>
+          <figcaption class="image-caption learn-more-image-caption">
+            <span>
+              <img src="/assets/marketing/shipping-truck.png" class="learn-more-logo">
+              <strong>Convenient Delivery</strong>
+            </span>
+          </figcaption>
+          <img src="/assets/marketing/learn-info-pod-delivery.jpg" class="learn-more-image">
+          <figcaption class="trailing-text">
+            <ul>
+              <li>Free delivery nationwide</li>
+              <li>Choose a delivery day that best fits your schedule</li>
+              <li>Ingredients arrive in a refrigerated box so food stays fresh even if you’re not home when we deliver</li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
 </div>

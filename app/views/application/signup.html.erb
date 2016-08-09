@@ -6,6 +6,7 @@
     </div>
     <fieldset>
 
+      <!-- select meal plan section -->
       <div class="col-lg-12 row">
         <h4 class="form-subheader">Select Your Meal Plan:</h4>
       </div>
@@ -14,18 +15,18 @@
         <div class="col-lg-6">
           <figure>
           <img src="http://d35uzl96cmnmq2.cloudfront.net/processed/blueapron_2person_plan_A_1600.jpg" class="plan-image" ng-class="{selected_plan_image: user.planId == 1}" ng-click="changePlan(1)">
-          <figcaption class="image-caption">2-Person Meal Plan: $59.99</figcaption>
+          <figcaption class="image-caption meal-plan-image-caption">2-Person Meal Plan: $59.99</figcaption>
           </figure>
         </div>
         <div class="col-lg-6">
           <figure>
           <img src="http://d35uzl96cmnmq2.cloudfront.net/processed/blueapron_family_plan_A_1600.jpg" class="plan-image" ng-class="{selected_plan_image: user.planId == 2}" ng-click="changePlan(2)">
-          <figcaption class="image-caption">Family Meal Plan: $79.99</figcaption>
+          <figcaption class="image-caption meal-plan-image-caption">Family Meal Plan: $79.99</figcaption>
           </figure>
         </div>
       </div>
 
-
+      <!-- personal information section -->
       <div class="col-lg-12 row">
         <h4 class="form-subheader">Personal Information:</h4>
       </div>
@@ -70,6 +71,7 @@
         </div>
       </div>
 
+      <!-- credit card information section -->
       <div class="col-lg-12 row">
         <h4 class="form-subheader">Credit Card Information:</h4>
       </div>

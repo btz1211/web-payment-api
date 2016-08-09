@@ -4,7 +4,6 @@
     <div class="alert alert-dismissible alert-danger" hidden="true">
       <span class="payment-errors"></span>
     </div>
-    <fieldset>
 
       <!-- select meal plan section -->
       <div class="col-lg-12 row">
@@ -26,93 +25,107 @@
         </div>
       </div>
 
-      <!-- personal information section -->
-      <div class="col-lg-12 row">
-        <h4 class="form-subheader">Personal Information:</h4>
+      <!-- check flow with payment request -->
+      <div ng-show="hasPaymentRequestSupport">
+        <div class="col-lg-12 row">
+          <div class="col-lg-6"></div>
+          <div class="col-lg-6">
+            <button class="btn btn-primary btn-sign-up" ng-click="signUpWithPaymentRequest()">sign up</button>
+          </div>
+        </div>
       </div>
 
-      <div class="col-lg-12 row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="email" class="col-lg-3 control-label">Email:</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" required name="email" ng-model="user.email"></input>
+      <!-- legacy checkout flow -->
+      <div ng-hide="hasPaymentRequestSupport" class="ng-hide">
+        <!-- personal information section -->
+        <div class="col-lg-12 row">
+          <h4 class="form-subheader">Personal Information:</h4>
+        </div>
+
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="email" class="col-lg-3 control-label">Email:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="email" ng-model="user.email"></input>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="password" class="col-lg-3 control-label">Password:</label>
+              <div class="col-lg-8">
+                <input type="password" class="form-control" required name="password" ng-model="user.password"></input>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="password" class="col-lg-3 control-label">Password:</label>
-            <div class="col-lg-8">
-              <input type="password" class="form-control" required name="password" ng-model="user.password"></input>
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="firstName" class="col-lg-3 control-label">First Name:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="firstName" ng-model="user.firstName"></input>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="lastName" class="col-lg-3 control-label">Last Name:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="lastName" ng-model="user.lastName"></input>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-lg-12 row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="firstName" class="col-lg-3 control-label">First Name:</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" required name="firstName" ng-model="user.firstName"></input>
+        <!-- credit card information section -->
+        <div class="col-lg-12 row">
+          <h4 class="form-subheader">Credit Card Information:</h4>
+        </div>
+
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="cardNumber" class="col-lg-3 control-label">Card Number:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" name="cardNumber" maxlength="16" size="16" data-stripe="number" ng-model="user.creditCard.cardNumber"></input>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="col-lg-3 control-label">Expiration (MM/YY)</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_month" name="expirationMonth" ng-model="user.creditCard.expirationMonth">
+                <span>/</span>
+                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_year" name="expirationYear" ng-model="user.creditCard.expirationYear">
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="lastName" class="col-lg-3 control-label">Last Name:</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" required name="lastName" ng-model="user.lastName"></input>
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="cvc" class="col-lg-3 control-label">CVC:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" name="cvc" data-stripe="cvc" ng-model="user.creditCard.cvc"></input>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- credit card information section -->
-      <div class="col-lg-12 row">
-        <h4 class="form-subheader">Credit Card Information:</h4>
-      </div>
-
-      <div class="col-lg-12 row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="cardNumber" class="col-lg-3 control-label">Card Number:</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" name="cardNumber" data-stripe="number" ng-model="user.creditCard.cardNumber"></input>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Expiration (MM/YY)</label>
-            <input type="text" size="2" data-stripe="exp_month" name="expirationMonth" ng-model="user.creditCard.expirationMonth">
-            <span> / </span>
-            <input type="text" size="2" data-stripe="exp_year" name="expirationYear" ng-model="user.creditCard.expirationYear">
+        <div class="col-lg-12 row">
+          <div class="col-lg-6"></div>
+          <div class="col-lg-6">
+            <button class="btn btn-primary btn-sign-up" ng-disabled="signupForm.$invalid" ng-click="signUp()">submit</button>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-12 row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="cvc" class="col-lg-3 control-label">CVC:</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" name="cvc" data-stripe="cvc" ng-model="user.creditCard.cvc"></input>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-12 row">
-        <div class="col-lg-6"></div>
-        <div class="col-lg-6">
-          <button class="btn btn-primary btn-sign-up" ng-disabled="signupForm.$invalid" ng-click="signUp()">submit</button>
-        </div>
-      </div>
-
-    </fieldset>
   </form>
 </div>

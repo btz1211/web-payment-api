@@ -29,7 +29,7 @@ module Api
             errors = convert_error_hash_to_array(credit_card.errors)
             render json: { errors: errors }.to_json, status: 400
           end
-          
+
         rescue Exception => e
           render json: {errors: ["unable to charge due to: #{e}"] }.to_json, status: 500
         end
@@ -95,8 +95,11 @@ module Api
     private
       def create_user
         User.new(email: params[:email], password: params[:password],
-                    firstName: params[:firstName], lastName: params[:lastName],
-                    planId: params[:planId])
+                 firstName: params[:firstName], lastName: params[:lastName],
+                 address_line_1: params[:address][:addressLine1],
+                 address_line_2: params[:address][:addressLine2],
+                 city: params[:address][:city],state: params[:address][:state],
+                 zip: params[:address][:zip],planId: params[:planId])
       end
 
       def set_user_cookie(user)

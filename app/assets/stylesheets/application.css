@@ -98,6 +98,15 @@ padding:15px;
   border-width: 3px;
 }
 
+.cc-exp-field{
+  width:25%;
+  display: inline-block;
+}
+
+.ng-hide{
+   visibility: hidden;
+}
+
 figcaption ul{
   font-size:17px;
 }

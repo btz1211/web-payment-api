@@ -45,7 +45,7 @@
         <div class="col-lg-12 row">
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="email" class="col-lg-3 control-label">Email:</label>
+              <label for="email" class="col-lg-4 control-label">Email:</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" required name="email" ng-model="user.email"></input>
               </div>
@@ -54,7 +54,7 @@
 
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="password" class="col-lg-3 control-label">Password:</label>
+              <label for="password" class="col-lg-4 control-label">Password:</label>
               <div class="col-lg-8">
                 <input type="password" class="form-control" required name="password" ng-model="user.password"></input>
               </div>
@@ -65,7 +65,7 @@
         <div class="col-lg-12 row">
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="firstName" class="col-lg-3 control-label">First Name:</label>
+              <label for="firstName" class="col-lg-4 control-label">First Name:</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" required name="firstName" ng-model="user.firstName"></input>
               </div>
@@ -74,9 +74,62 @@
 
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="lastName" class="col-lg-3 control-label">Last Name:</label>
+              <label for="lastName" class="col-lg-4 control-label">Last Name:</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" required name="lastName" ng-model="user.lastName"></input>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 row">
+          <h4 class="form-subheader">Shipping Information:</h4>
+        </div>
+
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="address1" class="col-lg-4 control-label">Address Line 1:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="address1" ng-model="user.address.addressLine1"></input>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="address2" class="col-lg-4 control-label">Address Line 2:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="address2" ng-model="user.address.addressLine2"></input>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12 row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="city" class="col-lg-4 control-label">City:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="city" ng-model="user.address.city"></input>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="state" class="col-lg-4 control-label">State:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="state" ng-model="user.address.state"></input>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="zip" class="col-lg-4 control-label">Zip:</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" required name="zip" ng-model="user.address.zip"></input>
               </div>
             </div>
           </div>
@@ -90,7 +143,7 @@
         <div class="col-lg-12 row">
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="cardNumber" class="col-lg-3 control-label">Card Number:</label>
+              <label for="cardNumber" class="col-lg-4 control-label">Card Number:</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" name="cardNumber" maxlength="16" size="16" data-stripe="number" ng-model="user.creditCard.cardNumber"></input>
               </div>
@@ -98,7 +151,7 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group">
-              <label class="col-lg-3 control-label">Expiration (MM/YY)</label>
+              <label class="col-lg-4 control-label">Expiration (MM/YY)</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_month" name="expirationMonth" ng-model="user.creditCard.expirationMonth">
                 <span>/</span>
@@ -111,7 +164,7 @@
         <div class="col-lg-12 row">
           <div class="col-lg-6">
             <div class="form-group">
-              <label for="cvc" class="col-lg-3 control-label">CVC:</label>
+              <label for="cvc" class="col-lg-4 control-label">CVC:</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" name="cvc" data-stripe="cvc" ng-model="user.creditCard.cvc"></input>
               </div>

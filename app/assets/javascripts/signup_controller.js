@@ -1,9 +1,10 @@
 blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blueapronApi){
   $scope.user = {};
+  $scope.user.creditCard = {};
   $scope.user.planId = 1;
 
   //payment request
-  $scope.hasPaymentRequestSupport = $window.PaymentRequest ? true : false;
+  $scope.hasPaymentRequestSupport = window.PaymentRequest ? true : false;
 
   $scope.supportedInstruments = [{
       supportedMethods: [
@@ -21,6 +22,11 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
       label: 'Family meal plan',
       price: '79.99'
     }
+  }
+  
+  $scope.options = {
+    requestPayerEmail: true,
+    requestShipping: true
   }
 
   $scope.signUp = function(){
@@ -52,20 +58,30 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
     }
 
     //implement signup with payment
-    /*
     // 1. Create a `PaymentRequest` instance
-    var request = new PaymentRequest($scope.supportedInstruments, details);
+    var request = new PaymentRequest($scope.supportedInstruments, details, $scope.options);
+    request.addEventListener('shippingaddresschange', function(evt) {
+      evt.updateWith(new Promise(function(resolve) {
+        $scope.updateDetails(details, request.shippingAddress, resolve);
+      }));
+    });
 
     // 2. Show the native UI with `.show()`
     request.show()
 
     // 3. Process the payment
-    .then(paymentRequestResponseHandler);
-    */
+    .then($scope.paymentRequestResponseHandler)
+    .catch(function(error){
+      console.log(JSON.stringify(error));
+    });
   }
 
   $scope.paymentRequestResponseHandler = function(response){
-    //interact with the response
+    console.log('sign up success! + ' + JSON.stringify(response));
+    response.complete('success');
+    $scope.mapUserInfo(response)
+    $scope.mapCardInfo(response.details);
+    Stripe.card.createToken($scope.user.creditCard, $scope.stripeResponseHandler);
   }
 
   $scope.stripeResponseHandler = function(status, response) {
@@ -81,7 +97,7 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
 
     } else { // Token was created!
 
-      $scope.user.creditCard.stripeToken = response.id;
+      $scope.user.creditCard.token = response.id;
       blueapronApi.createUser($scope.user).$promise
       .then(function(response){
         //redirect
@@ -91,6 +107,30 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
         $form.find('.alert-danger').removeAttr('hidden');
       })
     }
+  }
+  
+  $scope.updateDetails = function(details, shippingAddress, callback) {
+    if (shippingAddress.country === 'US') {
+      $scope.user.address = {};
+      $scope.user.address.addressLine1 = shippingAddress.addressLine[0];
+      $scope.user.address.city = shippingAddress.city;
+      $scope.user.address.state = shippingAddress.region;
+      $scope.user.address.zip = shippingAddress.postalCode;
+
+      var shippingOption = {
+        id: 'default',
+        label: 'Regular 2-day shipping',
+        amount: {currency: 'USD', value: '0.00'},
+        selected: true
+      };
+      
+      details.displayItems.splice(2, 1, shippingOption);
+      details.shippingOptions = [shippingOption];
+    } else {
+      // Don't ship outside of US for the purposes of this example.
+      delete details.shippingOptions;
+    }
+    callback(details);
   }
 
   $scope.login = function(){
@@ -108,4 +148,19 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
   $scope.changePlan = function(id){
     $scope.user.planId = id
   }
+  
+  $scope.mapCardInfo= function(details){
+    $scope.user.creditCard = {};
+    $scope.user.creditCard.number = details.cardNumber;
+    $scope.user.creditCard.cvc = details.cardSecurityCode;
+    $scope.user.creditCard.exp_month = details.expiryMonth;
+    $scope.user.creditCard.exp_year = details.expiryYear;
+  }
+  
+  $scope.mapUserInfo = function(response){
+    $scope.user.firstName = "Test";
+    $scope.user.lastName = "User";
+    $scope.user.email = response.payerEmail;
+  }
+  
 });

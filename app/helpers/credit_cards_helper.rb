@@ -1,13 +1,13 @@
 module CreditCardsHelper
   def create_credit_card(credit_card_info)
     customer = Stripe::Customer.create(
-      :source => credit_card_info[:stripeToken],
+      :source => credit_card_info[:token],
       :description => "card for #{credit_card_info[:name]}"
     )
 
-    CreditCard.new(cardNumber: credit_card_info[:cardNumber],
-                   expirationMonth: credit_card_info[:expirationMonth],
-                   expirationYear: credit_card_info[:expirationYear],
+    CreditCard.new(cardNumber: credit_card_info[:number],
+                   expirationMonth: credit_card_info[:exp_month],
+                   expirationYear: credit_card_info[:exp_year],
                    cvc: credit_card_info[:cvc],
                    stripe_token: customer.id);
 

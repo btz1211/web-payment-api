@@ -31,6 +31,7 @@ blueapron.controller('accountCtrl', function($scope, $routeParams, $window, $coo
   }
 
   $scope.showOrderMessage = function(){
+    console.log("Order Successful!");
     $('.error-alert').attr('hidden', 'true');
     $('.order-alert').removeAttr('hidden');
   }

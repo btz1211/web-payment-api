@@ -146,7 +146,7 @@
             <div class="form-group">
               <label for="cardNumber" class="col-lg-4 control-label">Card Number:</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" name="cardNumber" maxlength="16" size="16" data-stripe="number" ng-model="user.creditCard.cardNumber"></input>
+                <input type="text" class="form-control" name="cardNumber" maxlength="16" size="16" data-stripe="number" ng-model="user.creditCard.number"></input>
               </div>
             </div>
           </div>
@@ -154,9 +154,9 @@
             <div class="form-group">
               <label class="col-lg-4 control-label">Expiration (MM/YY)</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_month" name="expirationMonth" ng-model="user.creditCard.expirationMonth">
+                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_month" name="expirationMonth" ng-model="user.creditCard.exp_month">
                 <span>/</span>
-                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_year" name="expirationYear" ng-model="user.creditCard.expirationYear">
+                <input type="text" class="form-control cc-exp-field" maxlength="2" size="2" data-stripe="exp_year" name="expirationYear" ng-model="user.creditCard.exp_year">
               </div>
             </div>
           </div>

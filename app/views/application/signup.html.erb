@@ -1,5 +1,6 @@
 <div ng-controller='signUpCtrl'>
   <legend><h1>Sign up</h1></legend>
+  <h4>payment request support::{{hasPaymentRequestSupport}}</h4>
   <form name="signupForm" id="sign-up-form">
     <div class="alert alert-dismissible alert-danger" hidden="true">
       <span class="payment-errors"></span>
@@ -100,7 +101,7 @@
             <div class="form-group">
               <label for="address2" class="col-lg-4 control-label">Address Line 2:</label>
               <div class="col-lg-8">
-                <input type="text" class="form-control" required name="address2" ng-model="user.address.addressLine2"></input>
+                <input type="text" class="form-control" name="address2" ng-model="user.address.addressLine2"></input>
               </div>
             </div>
           </div>

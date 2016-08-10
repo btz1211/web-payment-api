@@ -4,12 +4,14 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
 
   //payment request
   $scope.hasPaymentRequestSupport = $window.PaymentRequest ? true : false;
+
   $scope.supportedInstruments = [{
       supportedMethods: [
         'visa', 'mastercard', 'amex', 'discover',
         'diners', 'jcb', 'unionpay'
       ]
   }];
+
   $scope.planDetails = {
     1: {
       label: '2-Person meal plan',

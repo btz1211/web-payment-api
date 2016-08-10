@@ -22,12 +22,28 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
       label: 'Family meal plan',
       price: '79.99'
     }
-  }
+  };
   
   $scope.options = {
     requestPayerEmail: true,
     requestShipping: true
-  }
+  };
+  
+  $scope.changePlan = function(id){
+    $scope.user.planId = id;
+  };
+  
+  $scope.login = function(){
+    blueapronApi.authenticateUser($scope.user).$promise
+    .then(function(response){
+      //redirect
+      $window.location.href = '/';
+    }).catch(function(error){
+      var $form = $('#login-form');
+      $form.find('.payment-errors').text(error.data.errors);
+      $form.find('.alert-danger').removeAttr('hidden');
+    });
+  };
 
   $scope.signUp = function(){
     var $form = $('#sign-up-form');
@@ -41,7 +57,7 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
       // Prevent the form from being submitted:
       return false;
     });
-  }
+  };
 
   $scope.signUpWithPaymentRequest = function(){
     console.log("Signing up with payment request!");
@@ -55,11 +71,11 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
         label: 'Total due',
         amount: { currency: 'USD', value: $scope.planDetails[$scope.user.planId].price }
       }
-    }
+    };
 
-    //implement signup with payment
     // 1. Create a `PaymentRequest` instance
     var request = new PaymentRequest($scope.supportedInstruments, details, $scope.options);
+    
     request.addEventListener('shippingaddresschange', function(evt) {
       evt.updateWith(new Promise(function(resolve) {
         $scope.updateDetails(details, request.shippingAddress, resolve);
@@ -74,22 +90,21 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
     .catch(function(error){
       console.log(JSON.stringify(error));
     });
-  }
+  };
 
   $scope.paymentRequestResponseHandler = function(response){
     console.log('sign up success! + ' + JSON.stringify(response));
-    response.complete('success');
-    $scope.mapUserInfo(response)
+    $scope.mapUserInfo(response);
     $scope.mapCardInfo(response.details);
     Stripe.card.createToken($scope.user.creditCard, $scope.stripeResponseHandler);
-  }
+    response.complete('success');
+  };
 
   $scope.stripeResponseHandler = function(status, response) {
     //Grab the form:
     var $form = $('#sign-up-form');
 
     if (response.error) {
-
       //Show the errors on the form:
       $form.find('.payment-errors').text(response.error.message);
       $form.find('.alert-danger').removeAttr('hidden');
@@ -105,17 +120,14 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
       }).catch(function(error){
         $form.find('.payment-errors').text(error.data.errors);
         $form.find('.alert-danger').removeAttr('hidden');
-      })
+      });
     }
-  }
+  };
   
+  //event listener for shipping address change
   $scope.updateDetails = function(details, shippingAddress, callback) {
     if (shippingAddress.country === 'US') {
-      $scope.user.address = {};
-      $scope.user.address.addressLine1 = shippingAddress.addressLine[0];
-      $scope.user.address.city = shippingAddress.city;
-      $scope.user.address.state = shippingAddress.region;
-      $scope.user.address.zip = shippingAddress.postalCode;
+      $scope.mapUserAddress(shippingAddress);
 
       var shippingOption = {
         id: 'default',
@@ -126,28 +138,13 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
       
       details.displayItems.splice(2, 1, shippingOption);
       details.shippingOptions = [shippingOption];
+      
     } else {
       // Don't ship outside of US for the purposes of this example.
       delete details.shippingOptions;
     }
     callback(details);
-  }
-
-  $scope.login = function(){
-    blueapronApi.authenticateUser($scope.user).$promise
-    .then(function(response){
-      //redirect
-      $window.location.href = '/';
-    }).catch(function(error){
-      var $form = $('#login-form');
-      $form.find('.payment-errors').text(error.data.errors);
-      $form.find('.alert-danger').removeAttr('hidden');
-    })
-  }
-
-  $scope.changePlan = function(id){
-    $scope.user.planId = id
-  }
+  };
   
   $scope.mapCardInfo= function(details){
     $scope.user.creditCard = {};
@@ -155,12 +152,19 @@ blueapron.controller('signUpCtrl', function($scope, $log, $window, $cookies, blu
     $scope.user.creditCard.cvc = details.cardSecurityCode;
     $scope.user.creditCard.exp_month = details.expiryMonth;
     $scope.user.creditCard.exp_year = details.expiryYear;
-  }
+  };
   
   $scope.mapUserInfo = function(response){
     $scope.user.firstName = "Test";
     $scope.user.lastName = "User";
     $scope.user.email = response.payerEmail;
-  }
+  };
   
+  $scope.mapUserAddress = function(shippingAddress){
+    $scope.user.address = {};
+    $scope.user.address.addressLine1 = shippingAddress.addressLine[0];
+    $scope.user.address.city = shippingAddress.city;
+    $scope.user.address.state = shippingAddress.region;
+    $scope.user.address.zip = shippingAddress.postalCode;
+  };
 });
